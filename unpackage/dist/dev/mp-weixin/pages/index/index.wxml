@@ -1,0 +1,1 @@
+<view class="content"><view class="text-area"><view class="title">{{demo1.demo}}</view><view class="title">{{getLocale}}</view></view></view>
