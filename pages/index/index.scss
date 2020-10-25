@@ -1,0 +1,54 @@
+	.page {
+		background-color: pink;
+		
+		.rhythm-box{
+			width: 100vw;
+			padding: 30rpx;
+			box-sizing: border-box;
+			overflow: hidden;
+			overflow-x: auto;
+			.handle-icon{
+				width: 50rpx;
+				height: 50rpx;
+				border-radius: 50%;
+				text-align: center;
+				line-height: 50rpx;
+				background: yellow;
+				color: #333;
+			}
+			.add-icon{
+				margin-left: 20rpx;
+			}
+			.delete-icon{
+				margin-right: 20rpx;
+			}
+			.point-list-box{
+				margin-right: 20rpx;
+				.point-list{
+					margin-top: 20rpx;
+					.point-item{
+						width: 50rpx;
+							height: 50rpx;
+							margin-bottom: 20rpx;
+							text-align: center;
+							line-height: 50rpx;
+							background-color: #FFFFFF;
+							border-radius: 50%;	
+						}
+				}
+				
+						
+				}
+			}
+		
+		.circle-item-strong {
+			color: #007AFF;
+			background-color: #007AFF !important;
+			font-size: 50rpx;
+		}
+		
+		.circle-item-active {
+			transition: all 500ms;
+			transform: scale(5);
+		}
+	}

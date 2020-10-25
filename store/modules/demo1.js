@@ -12,7 +12,6 @@ const store = {
     },
     mutations: {
         [demoname.fn]: (state, localeVal) => {
-            console.log('被执行了', localeVal)
         }
     },
     actions: {

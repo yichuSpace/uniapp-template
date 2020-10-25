@@ -1,40 +1,205 @@
 <template>
-	<view class="content">
-		<view class="text-area">
-			<view class="title">{{demo1.demo}}</view>
-			<view class="title">{{getLocale}}</view>
-		</view>
-	</view>
+  <view class="page">
+    <view class="beatsNum-part">
+      <view>
+        <text>拍子数：{{ beatsNum }}</text>
+      </view>
+    </view>
+    <!-- 	<view class="circle" :style="'height:' + circleBoxHeight + 'rpx'">
+			<text v-for="(item, index) in circleNum" :key="index" :class="'circle-item ' + (item % beat === 0?'circle-item-strong':'') + ' ' + (serialNum === index &&isPlay?'circle-item-active':'')"></text>
+		</view> -->
+    <view class="rhythm-box">
+      <view class="rhythm-point flex">
+        <view class="handle-icon delete-icon animated bounceIn fast mt-5" @click="deletePointListData">-</view>
+        <view class="flex justify-between flex-column align-center point-list-box" v-for="(list,index) in rhythmPointList" :key="index">
+          <view class="handle-icon point-delete-icon animated bounceIn fast" @click="deletePointData(index)">-</view>
+          <view class="flex-1 point-list">
+            <view class="point-item animated bounceIn fast" :class="item.id ===serialId?'circle-item-strong circle-item-active':''" v-for="(item,idx) in list" :key="idx" @click="handlePointLevel(index,idx)">
+              {{item.level}}
+            </view>
+          </view>
+          <view class="handle-icon point-add-icon animated bounceIn fast " @click="addPointData(index)">+</view>
+        </view>
+        <view class="handle-icon add-icon animated bounceIn fast mt-5" @click="addPointListData">+</view>
+      </view>
+    </view>
+    <view @tap="startHandleAudioPlay">开始</view>
+    <view @tap="stopHandleAudioPlay">结束</view>
+    <view @tap="pauseHandleAudioPlay">暂停</view>
+  </view>
 </template>
 
 <script>
-	import { mapState, mapGetters, mapActions, mapMutations } from 'vuex'
+	import {
+		getUuid
+	} from '@/utils/index.js'
+	
+	const audioOne = uni.createInnerAudioContext({});
+	const audioTwo = uni.createInnerAudioContext({});
+	const audioThree = uni.createInnerAudioContext({});
+	const audioFour = uni.createInnerAudioContext({});
+
 	export default {
 		data() {
 			return {
-				title: 'Hello'
+				rhythmPointList: [], //节奏数据
+				beatsNum: 60, //拍子数
+				beat: 0, //拍子
+				note: 0,
+				isPlay: null,
+				serialNum: 0, //当前的坐标
+				serialId: 0,
+				circleBoxHeight: 200 //高度
+			};
+		},
+
+		onShow: function() {
+			let obj = {
+				id: getUuid(),
+				abscissa: 0,
+				ordinate: 0,
+				level: 2
 			}
+
+			this.rhythmPointList[0] = [obj]
+			console.log(this.rhythmPointList)
+			audioOne.src = "/static/audio/A1.wav"
+			audioTwo.src = "/static/audio/A2.wav"
+			audioThree.src = "/static/audio/A3.wav"
+			audioFour.src = "/static/audio/A4.wav"
 		},
-		computed: {
-			...mapGetters(['getLocale']),
-			...mapState([
-				'demo1'
-			])
-		},
-		onLoad() {
-			this.fn('传递的内容')
-			this.demoactions('这是一个异步')
+		onHide: function() {
+			console.log('hide')
+			this.stopHandle();
 		},
 		methods: {
-			...mapMutations([
-				'fn'
-			]),
-			...mapActions([
-				'demoactions'
-			])
-		}
-	}
-</script>
+			// 播放音频
+			audioPlay(key) {
+				switch (key) {
+					case 0:
+					audioOne.stop();
+						break;
+					case 1:
+						audioOne.stop();
+						audioOne.play();
+						break;
+					case 2:
+						audioTwo.stop();
+						audioTwo.play();
+						break;
+					case 3:
+						audioThree.stop();
+						audioThree.play();
+						break;
+					default:
+						break;
+				}
+			},
 
-<style>
+			// 开始
+			startHandleAudioPlay() {
+				console.log(this.rhythmPointList)
+				let playPointList = []
+				this.rhythmPointList.forEach(item => {
+					playPointList = [...playPointList, ...item]
+				})
+				this.playPointList = playPointList
+				if (this.isPlay) return;
+				this.handleTipBoxMove();
+				const time = 60000 / this.beatsNum;
+				const isPlay = setInterval(() => {
+					this.handleTipBoxMove();
+				}, time);
+				this.isPlay = isPlay
+			},
+			// 处理提示框的移动
+			handleTipBoxMove() {
+				let serialNum = this.serialNum
+				serialNum += 1
+				if (serialNum === this.playPointList.length) {
+					serialNum = 0;
+				}
+
+				this.$set(this, 'serialNum', serialNum)
+				this.$set(this, 'serialId', this.playPointList[serialNum].id)
+
+				this.audioPlay(this.playPointList[serialNum].level)
+
+			},
+			// 停止
+			stopHandleAudioPlay(e) {
+				clearTimeout(this.isPlay);
+				this.isPlay = null
+				this.serialNum = null
+			},
+			// 暂定
+			pauseHandleAudioPlay(e) {
+				clearTimeout(this.isPlay);
+				this.isPlay = null
+			},
+			// 添加数据
+			addPointListData() {
+				let serialNum = 0
+				if (this.rhythmPointList.length > 0) {
+					this.rhythmPointList.forEach(item => {
+						serialNum += item.length
+					})
+				}
+				let obj = {
+					id: getUuid(),
+					abscissa: this.rhythmPointList.length,
+					ordinate: 0,
+					level: 2
+				}
+				console.log(obj)
+				if (this.rhythmPointList.length === 8) return
+				this.rhythmPointList.push([obj])
+			},
+			// 删除列表数据
+			deletePointListData() {
+				if (this.rhythmPointList.length === 1) return
+				this.rhythmPointList.shift()
+			},
+			// 添加点数
+			addPointData(idx) {
+				let serialNum = 0
+				if (idx > 0) {
+					for (let i = 0; i < idx + 1; i++) {
+						serialNum += this.rhythmPointList[i].length
+					}
+				} else {
+					serialNum = this.rhythmPointList[idx].length
+				}
+				let obj = {
+					id: getUuid(),
+					abscissa: idx,
+					ordinate: this.rhythmPointList[idx].length,
+					level: 3
+				}
+				console.log(obj)
+				this.rhythmPointList[idx].push(obj)
+				this.$forceUpdate()
+			},
+			// 删除点数
+			deletePointData(idx) {
+				if (this.rhythmPointList[idx].length === 1) return
+				this.rhythmPointList[idx].shift()
+
+			},
+			// 增加级别
+			handlePointLevel(index, idx) {
+				const oldPoint = this.rhythmPointList[index][idx]
+				if (oldPoint.level === 3) {
+					oldPoint.level = 0
+				} else {
+					oldPoint.level += 1
+				}
+				this.rhythmPointList[index][idx] = oldPoint
+				this.$forceUpdate()
+			},
+		}
+	};
+</script>
+<style lang="scss">
+@import "./index";
 </style>

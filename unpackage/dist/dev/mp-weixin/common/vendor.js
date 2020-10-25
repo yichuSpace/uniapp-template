@@ -9173,8 +9173,7 @@ var index = {
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
-	"./demo1.js": 14,
-	"./demo2.js": 15
+	"./demo1.js": 14
 };
 
 
@@ -9220,7 +9219,6 @@ var store = {
 
   mutations: _defineProperty({},
   demoname.fn, function (state, localeVal) {
-    console.log('被执行了', localeVal);
   }),
 
   actions: {
@@ -9232,38 +9230,27 @@ var store = {
 store;exports.default = _default;
 
 /***/ }),
-/* 15 */
-/*!*********************************************************!*\
-  !*** D:/myProject/metronome-app/store/modules/demo2.js ***!
-  \*********************************************************/
+/* 15 */,
+/* 16 */,
+/* 17 */,
+/* 18 */,
+/* 19 */,
+/* 20 */,
+/* 21 */
+/*!*************************************************!*\
+  !*** D:/myProject/metronome-app/utils/index.js ***!
+  \*************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var demoname = {
-  fn: 'fn' };
-
-var store = {
-  state: {
-    demo: '名字' },
-
-  getters: {
-    getLocale: function getLocale(state) {
-      return state.demo + 321;
-    } },
-
-  mutations: _defineProperty({},
-  demoname.fn, function (state, localeVal) {
-    console.log('被执行了', localeVal);
-  }),
-
-  actions: {
-    demoactions: function demoactions(_ref, localeVal) {var commit = _ref.commit;
-      commit(demoname.fn, localeVal);
-    } } };var _default =
-
-
-store;exports.default = _default;
+Object.defineProperty(exports, "__esModule", { value: true });exports.S4 = S4;exports.getUuid = getUuid;function S4() {
+  return ((1 + Math.random()) * 0x10000 | 0).toString(16).substring(1);
+}
+function getUuid() {
+  return S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() +
+  S4();
+}
 
 /***/ })
 ]]);

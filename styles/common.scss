@@ -1,0 +1,94 @@
+/* flex 布局 */
+.flex{
+	/* #ifndef APP-PLUS-NVUE */
+	display:flex!important;
+	/* #endif */
+	flex-direction:row;
+}
+.flex-row{ flex-direction:row!important; }
+.flex-column{ flex-direction:column!important; }
+.flex-row-reverse{ flex-direction:row-reverse!important; }
+.flex-column-reverse{ flex-direction:column-reverse!important; }
+.flex-wrap{ flex-wrap:wrap;}
+.flex-nowrap{ flex-wrap:nowrap;}
+.justify-start{justify-content:flex-start;}
+.justify-end{justify-content:flex-end;}
+.justify-between{justify-content:space-between;}
+.justify-center{justify-content:center;}
+.align-center{ align-items: center; }
+.align-stretch{ align-items: stretch; }
+.align-start{ align-items: flex-start; }
+.align-end{ align-items: flex-end; }
+/* #ifndef APP-PLUS-NVUE */
+.content-start {align-content: flex-start;}
+.content-end {align-content: flex-end;}
+.content-center {align-content: center;}
+.content-between {align-content: space-between;}
+.content-around {align-content: space-around;}
+.content-stretch {align-content: stretch;}
+/* #endif */
+.flex-1{ flex: 1; }
+.flex-2{ flex: 2; }
+.flex-3{ flex: 3; }
+.flex-4{ flex: 4; }
+.flex-5{ flex: 5; }
+/* #ifndef APP-PLUS-NVUE */
+.flex-shrink{ flex-shrink: 0; }
+/* #endif */
+
+/*  -- 内外边距 -- */
+.m-0 { margin: 0; }
+/* #ifndef APP-PLUS-NVUE */
+.m-auto{ margin: auto; }
+/* #endif */
+.m-1 { margin: 10rpx; }
+.m-2 { margin: 20rpx; }
+.m-3 { margin: 30rpx; }
+.m-4 { margin: 40rpx; }
+.m-5 { margin: 50rpx; }
+.mt-0 { margin-top: 0; }
+/* #ifndef APP-PLUS-NVUE */
+.mt-auto { margin-top: auto; }
+/* #endif */
+.mt-1 { margin-top: 10rpx; }
+.mt-2 { margin-top: 20rpx; }
+.mt-3 { margin-top: 30rpx; }
+.mt-4 { margin-top: 40rpx; }
+.mt-5 { margin-top: 50rpx; }
+.mb-0 { margin-bottom: 0; }
+/* #ifndef APP-PLUS-NVUE */
+.mb-auto { margin-bottom: auto; }
+/* #endif */
+.mb-1 { margin-bottom: 10rpx; }
+.mb-2 { margin-bottom: 20rpx; }
+.mb-3 { margin-bottom: 30rpx; }
+.mb-4 { margin-bottom: 40rpx; }
+.mb-5 { margin-bottom: 50rpx; }
+.ml-0 { margin-left: 0; }
+/* #ifndef APP-PLUS-NVUE */
+.ml-auto { margin-left: auto; }
+/* #endif */
+.ml-1 { margin-left: 10rpx; }
+.ml-2 { margin-left: 20rpx; }
+.ml-3 { margin-left: 30rpx; }
+.ml-4 { margin-left: 40rpx; }
+.ml-5 { margin-left: 50rpx; }
+.mr-0 { margin-right: 0; }
+/* #ifndef APP-PLUS-NVUE */
+.mr-auto { margin-right: auto; }
+/* #endif */
+.mr-1 { margin-right: 10rpx; }
+.mr-2 { margin-right: 20rpx; }
+.mr-3 { margin-right: 30rpx; }
+.mr-4 { margin-right: 40rpx; }
+.mr-5 { margin-right: 50rpx; }
+.my-0 { margin-top: 0; margin-bottom: 0; }
+/* #ifndef APP-PLUS-NVUE */
+.my-auto { margin-top: auto; margin-bottom: auto; }
+/* #endif */
+.my-1 { margin-top: 10rpx; margin-bottom: 10rpx; }
+.my-2 { margin-top: 20rpx; margin-bottom: 20rpx; }
+.my-3 { margin-top: 30rpx; margin-bottom: 30rpx; }
+.my-4 { margin-top: 40rpx; margin-bottom: 40rpx; }
+.my-5 { margin-top: 50rpx; margin-bottom: 50rpx; }
+.mx-0 { margin-left: 0; margin-right: 0; }
