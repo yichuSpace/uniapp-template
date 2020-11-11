@@ -8,6 +8,15 @@
 					"titleNView": false
 				}
 			}
+		},
+		{
+			"path": "pages/demo/index",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
 		}
 
 	],
