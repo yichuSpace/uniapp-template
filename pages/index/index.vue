@@ -1,35 +1,35 @@
 <template>
 	<view class="page">
-	<view class="content">
-		<view class="flex align-center justify-center operation-area">
-			<view class="rhythm-box">
-				<view class="rhythm-point flex">
-					<view class="animated bounceIn fast handle-icon delete-icon mt-5" @click="deletePointListData">-</view>
-					<view class="flex justify-between flex-column align-center point-list-box" v-for="(list,index) in rhythmPointList"
-					 :key="index">
-						<view class="animated bounceIn fast handle-icon point-delete-icon " @click="deletePointData(index)">-</view>
-						<view class="flex-1 point-list">
-							<view class="point-item circle-item-strong " :class="[item.id ===serialId?'circle-item-active':'',item.level===0?'level-one':item.level===1?'level-two':item.level===2?'level-three':'level-four']"
-							 v-for="(item,idx) in list" :key="idx" @click="handlePointLevel(index,idx)">
-								<!-- {{item.level}} -->
+		<view class="content">
+			<view class="flex align-center justify-center operation-area">
+				<view class="rhythm-box">
+					<view class="rhythm-point flex">
+						<view class="animated bounceIn fast handle-icon delete-icon mt-5" @click="deletePointListData">-</view>
+						<view class="flex justify-between flex-column align-center point-list-box" v-for="(list,index) in rhythmPointList"
+						 :key="index">
+							<view class="animated bounceIn fast handle-icon point-delete-icon " @click="deletePointData(index)">-</view>
+							<view class="flex-1 point-list">
+								<view class="point-item circle-item-strong " :class="[item.id ===serialId?'circle-item-active':'',item.level===0?'level-one':item.level===1?'level-two':item.level===2?'level-three':'level-four']"
+								 v-for="(item,idx) in list" :key="idx" @click="handlePointLevel(index,idx)">
+									<!-- {{item.level}} -->
+								</view>
 							</view>
+							<view class="animated bounceIn fast handle-icon point-add-icon " @click="addPointData(index)">+</view>
 						</view>
-						<view class="animated bounceIn fast handle-icon point-add-icon " @click="addPointData(index)">+</view>
+						<view class="animated bounceIn fast handle-icon add-icon mt-5" @click="addPointListData">+</view>
 					</view>
-					<view class="animated bounceIn fast handle-icon add-icon mt-5" @click="addPointListData">+</view>
 				</view>
 			</view>
+			<view class="flex align-center handle-box justify-center" :class="isShowKeyBoard?'handle-box-acitve':'handle-box-init'">
+				<view class="handle-btn" @click="handlebeatNum('reduce')">-</view>
+				<view class="beatsNum-box" @click="openKeyBoard('number')">{{!isShowKeyBoard?beatsNum:keyWord}}</view>
+				<view class="handle-btn" @click="handlebeatNum('add')">+</view>
+				<view class="play-btn" v-if="isShowPlayBtn" @tap="startHandleAudioPlay">开始</view>
+				<view class="play-btn" v-else @tap="stopHandleAudioPlay">结束</view>
+				<!-- <view @tap="pauseHandleAudioPlay">暂停</view> -->
+			</view>
 		</view>
-		<view class="flex align-center ">
-			<view @click="handlebeatNum('reduce')">-</view>
-			<view>{{beatsNum}}</view>
-			<view @click="handlebeatNum('add')">+</view>
-			<view @tap="startHandleAudioPlay">开始</view>
-		<!-- 	<view @tap="stopHandleAudioPlay">结束</view>
-			<view @tap="pauseHandleAudioPlay">暂停</view> -->
-		</view>
-	</view>
-		<keyboard-package ref="number" @onInput="onInput" @onDelete="onDelete" @onConfirm="onConfirm"  />
+		<keyboard-package ref="number" @onInput="onInputValue" @onDelete="onDelete" @onConfirm="onConfirm" @onClose="closePopupBox" />
 
 	</view>
 </template>
@@ -47,6 +47,9 @@
 	export default {
 		data() {
 			return {
+				keyWord: '',
+				isShowPlayBtn: true, //是否显示播放按钮
+				isShowKeyBoard: false, //是否显示键盘
 				numberList: [],
 				idCardList: [],
 				plateNumberList: [],
@@ -139,6 +142,7 @@
 					this.handlePlayAudioData()
 				}, time);
 				this.isPlay = isPlay
+				this.isShowPlayBtn = false
 			},
 			// 设置每一拍播放速度
 			handlePlayAudioData() {
@@ -174,6 +178,8 @@
 				clearInterval(this.playAudioItem)
 				this.isPlay = null
 				this.serialNum = null
+				this.serialId = null
+				this.isShowPlayBtn = true
 			},
 			// 暂定
 			pauseHandleAudioPlay(e) {
@@ -243,60 +249,71 @@
 				this.$forceUpdate()
 			},
 			// 处理拍子数
-			handlebeatNum(type){
-				if(type === 'add'){
-					this.beatsNum+=1
-				}else{
-					this.beatsNum-=1
+			handlebeatNum(type) {
+				if (type === 'add') {
+					this.beatsNum = parseInt(this.beatsNum) + 1
+				} else {
+					this.beatsNum = parseInt(this.beatsNum) - 1
 				}
 			},
+			// 打开键盘
 			openKeyBoard(key) {
 				this.type = key;
+				this.isShowKeyBoard = true
 				this.$refs[key].open();
 			},
-			onInput(val) {
+			// 获取输入值
+			onInputValue(val) {
 				console.log(val)
-				if (this.numberList.length >= this.length) {
-					this.close();
-					return;
-				};
-				if (this.numberList.length === this.length - 1) {
-					this.numberList.push(val);
-					this.close();
-					return;
-				};
-				this.numberList.push(val);
+				if(val === 'TAP'){
+					this.keyWord =Math.ceil(Math.random()*100)
+					return
+				}
+				if (this.keyWord.length >= 3) {
+					return
+				}
+				this.keyWord = this.keyWord.toString() + val
+				// if (this.numberList.length >= this.length) {
+				// 	this.close();
+				// 	return;
+				// };
+				// if (this.numberList.length === this.length - 1) {
+				// 	this.numberList.push(val);
+				// 	this.close();
+				// 	return;
+				// };
+				// this.numberList.push(val);
 			},
+			// 删除
 			onDelete() {
-				this.numberList.pop();
+				this.keyWord = this.keyWord.substring(0, this.keyWord.length - 1)
+				console.log(this.keyWord)
 			},
-	close(){
-		this.$refs[this.type].close();
-	},
-		onConfirm() {
-			uni.showToast({
-				title: '完成输入！',
-				duration: 2000,
-				icon: 'none'
-			})
+			// 关闭键盘
+			close() {
+				this.$refs[this.type].close();
+			},
+			closePopupBox() {
+				this.isShowKeyBoard = false
+				if (this.keyWord) {
+					this.beatsNum = this.keyWord
+					this.keyWord = ''
+				}
+
+				// this.$refs[this.type].close();
+			},
+			// 确定
+			onConfirm() {
+				uni.showToast({
+					title: '完成输入！',
+					duration: 2000,
+					icon: 'none'
+				})
+			},
 		},
-	},
-	computed: {
-		passStr() {
-			let str = '';
-			this.idCardList.forEach(item => {
-				str += item.toString();
-			})
-			return str;
-		},
-		plateNumberStr() {
-			let str = '';
-			this.plateNumberList.forEach(item => {
-				str += item.toString();
-			})
-			return str;
+		computed: {
+
 		}
-	}
 	};
 </script>
 <style lang="scss">

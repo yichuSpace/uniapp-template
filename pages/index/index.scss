@@ -2,6 +2,7 @@
 		.content{
 			width:100vw;
 			height: 100vh;
+			position: relative;
 			color: #FFFFFF;
 			background-color: #000;
 			.operation-area{
@@ -44,7 +45,7 @@
 								font-size: 50rpx;
 							}
 							.level-one{
-								border: 8rpx solid #fff;
+								border: 8rpx solid rgba($color: #fff, $alpha: 0.4);
 								box-sizing: border-box;
 							}
 							.level-two{
@@ -63,7 +64,40 @@
 					}
 				}
 			}
-			
+			.handle-box{
+				position: absolute;
+				bottom: 150rpx;
+				z-index: 100;
+				width: 90%;
+				height: 120rpx;
+				border-radius: 10rpx;
+				margin: 0 5%;
+				background: #131313;
+				.handle-btn{
+					width: 50rpx;
+					height: 50rpx;
+					font-size: 80rpx;
+					line-height: 50rpx;
+				}
+				.beatsNum-box{
+					width: 150rpx;
+					height: 50rpx;
+					font-size: 80rpx;
+					line-height: 50rpx;
+					text-align: center;
+				}
+				.play-btn{
+					margin-left: 30rpx;
+				}
+			}
+			.handle-box-acitve{
+				bottom: 450rpx;	
+				transition-duration: 0.3s;
+			}
+			.handle-box-init{
+				bottom: 150rpx;
+				transition-duration: 0.3s;
+			}
 		}	
 		.circle-item-active {
 			transition: all 20ms;

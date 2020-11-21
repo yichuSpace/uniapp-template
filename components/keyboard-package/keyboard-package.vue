@@ -1,14 +1,14 @@
 <template>
-	<uni-popup :custom="true" type="bottom" ref="keyboardPackage">
+	<uni-popup :custom="true" type="bottom" ref="keyboardPackage" @change="changePopup">
 		<view class="keyboardbox">
 			<view class="numkeyboard" v-if="type==='number'">
 				<view class="num-area">
 					<view class="row" v-for="(item,index) in numKeybordList" :key="index">
-						<view :class="['item',(disableDot && ite==='<')?'disabled':'']" v-for="(ite,idx) in item"
-						 hover-class="active" :hover-start-time="0" :hover-stay-time="5" :key="idx" @tap="input(ite)">{{ite}}</view>
+						<view :class="['item',(disableDot && ite==='<')?'disabled':'']" v-for="(ite,idx) in item" hover-class="active"
+						 :hover-start-time="0" :hover-stay-time="5" :key="idx" @tap="input(ite)">{{ite}}</view>
 					</view>
 				</view>
-				<!-- <view class="btn-area">
+				<!-- 				<view class="btn-area">
 					<view :class="['item','del']" hover-class="active" :hover-start-time="0" :hover-stay-time="5" @tap="deleteVal">
 						删除
 					</view>
@@ -94,7 +94,7 @@
 					[1, 2, 3],
 					[4, 5, 6],
 					[7, 8, 9],
-					['TAP', 0,'<']
+					['TAP', 0, '<']
 				],
 				idCardList: [
 					[1, 2, 3],
@@ -130,13 +130,23 @@
 			},
 			input(val) {
 				if (val === '.' && this.disableDot) return;
+				if (val === '<') {
+					this.deleteVal()
+					return
+				}
 				this.$emit('onInput', val);
-				if(this.active === 2){
+				if (this.active === 2) {
 					this.active = 1;
 				}
 			},
 			close() {
 				this.$refs.keyboardPackage.close();
+			},
+			changePopup(e) {
+				console.log(e)
+				if (!e.show) {
+					this.$emit('onClose');
+				}
 			}
 		}
 	}
@@ -144,12 +154,10 @@
 
 <style lang="scss" scoped>
 	.keyboardbox {
-		background-color: #FFFFFF;
-
 		.numkeyboard {
 			height: 432rpx;
 			display: flex;
-			background-color: #ebedf0;
+			background-color: #000000;
 
 			.btn-area {
 				width: 180rpx;
@@ -201,10 +209,10 @@
 						display: flex;
 						justify-content: center;
 						align-items: center;
-						background-color: #FFFFFF;
-						border-right: 1px solid #ebedf0;
 						width: 33.33%;
-						
+						color: #aaaaaa;
+						font-size: 36rpx;
+
 						&.active {
 							background-color: #ebedf0;
 						}
@@ -215,8 +223,7 @@
 						}
 
 						&.disabled {
-							background: #FFFFFF;
-							color: #B9B9B9;
+							color: #aaaaaa;
 						}
 					}
 				}
@@ -249,6 +256,7 @@
 				height: 100%;
 				display: flex;
 				align-items: center;
+
 				&.active {
 					background-color: #ebedf0;
 				}
@@ -274,6 +282,7 @@
 					border-radius: 6rpx;
 					margin: 0 7rpx;
 					font-size: 24rpx;
+
 					&.active {
 						background-color: #ebedf0;
 					}
