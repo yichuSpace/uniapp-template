@@ -1,6 +1,7 @@
 <template>
 	<view class="page">
 		<view class="content">
+			<view class="content-top">fdasfa</view>
 			<view class="flex align-center justify-center operation-area">
 				<view class="rhythm-box">
 					<view class="rhythm-point flex">
@@ -50,6 +51,7 @@
 				keyWord: '',
 				isShowPlayBtn: true, //是否显示播放按钮
 				isShowKeyBoard: false, //是否显示键盘
+				tapTimeData:'',//点击tap时间
 				numberList: [],
 				idCardList: [],
 				plateNumberList: [],
@@ -71,15 +73,13 @@
 		components: {
 			keyboardPackage,
 		},
-		mounted() {
-			// this.openKeyBoard('number');
-		},
-		onShow: function() {
+
+		created() {
 			let obj = {
 				id: getUuid(),
 				abscissa: 0,
 				ordinate: 0,
-				level: 2
+				level: 1
 			}
 
 			this.rhythmPointList[0] = [obj]
@@ -224,7 +224,7 @@
 					id: getUuid(),
 					abscissa: idx,
 					ordinate: this.rhythmPointList[idx].length,
-					level: 3
+					level: 1
 				}
 				console.log(obj)
 				this.rhythmPointList[idx].push(obj)
@@ -266,23 +266,24 @@
 			onInputValue(val) {
 				console.log(val)
 				if(val === 'TAP'){
-					this.keyWord =Math.ceil(Math.random()*100)
+					const time = new Date().getTime()
+					if(this.tapTimeData && time - this.tapTimeData <1000){
+						const keyWord =Math.ceil(Math.random()*100)+this.keyWord
+						if(keyWord>=1000){
+							this.keyWord =Math.ceil(Math.random()*100)
+						}else{
+							this.keyWord =keyWord
+						}
+					}else{
+						this.keyWord =Math.ceil(Math.random()*100)
+					}
+					this.tapTimeData = time
 					return
 				}
 				if (this.keyWord.length >= 3) {
 					return
 				}
 				this.keyWord = this.keyWord.toString() + val
-				// if (this.numberList.length >= this.length) {
-				// 	this.close();
-				// 	return;
-				// };
-				// if (this.numberList.length === this.length - 1) {
-				// 	this.numberList.push(val);
-				// 	this.close();
-				// 	return;
-				// };
-				// this.numberList.push(val);
 			},
 			// 删除
 			onDelete() {

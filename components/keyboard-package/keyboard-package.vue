@@ -214,7 +214,7 @@
 						font-size: 36rpx;
 
 						&.active {
-							background-color: #ebedf0;
+							// background-color: #ebedf0;
 						}
 
 						&.z {

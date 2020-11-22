@@ -1,6 +1,7 @@
 {
   "navigationStyle": "custom",
   "usingComponents": {
+    "password-input": "/components/password-input/password-input",
     "keyboard-package": "/components/keyboard-package/keyboard-package"
   }
 }

@@ -24,55 +24,114 @@
 /* 垂直间距 */
 /* 透明度 */
 /* 文章场景相关 */
-.page {
-  background-color: pink;
-}
-.page .rhythm-box {
+.page .content {
   width: 100vw;
+  height: 100vh;
+  position: relative;
+  color: #FFFFFF;
+  background-color: #000;
+}
+.page .content .operation-area {
+  padding-top: 150rpx;
+}
+.page .content .operation-area .rhythm-box {
   padding: 30rpx;
-  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
   overflow: hidden;
   overflow-x: auto;
 }
-.page .rhythm-box .handle-icon {
+.page .content .operation-area .rhythm-box .handle-icon {
   width: 50rpx;
   height: 50rpx;
-  border-radius: 50%;
+  -webkit-border-radius: 50%;
+          border-radius: 50%;
   text-align: center;
   line-height: 50rpx;
-  background: yellow;
-  color: #333;
+  font-size: 48rpx;
+  color: #fff;
 }
-.page .rhythm-box .add-icon {
-  margin-left: 20rpx;
-}
-.page .rhythm-box .delete-icon {
+.page .content .operation-area .rhythm-box .delete-icon {
   margin-right: 20rpx;
 }
-.page .rhythm-box .point-list-box {
+.page .content .operation-area .rhythm-box .point-list-box {
   margin-right: 20rpx;
 }
-.page .rhythm-box .point-list-box .point-list {
+.page .content .operation-area .rhythm-box .point-list-box .point-list {
   margin-top: 20rpx;
 }
-.page .rhythm-box .point-list-box .point-list .point-item {
+.page .content .operation-area .rhythm-box .point-list-box .point-list .point-item {
   width: 50rpx;
   height: 50rpx;
   margin-bottom: 20rpx;
   text-align: center;
   line-height: 50rpx;
-  background-color: #FFFFFF;
-  border-radius: 50%;
+  -webkit-border-radius: 50%;
+          border-radius: 50%;
 }
-.page .circle-item-strong {
+.page .content .operation-area .rhythm-box .point-list-box .point-list .circle-item-strong {
   color: #007AFF;
-  background-color: #007AFF !important;
   font-size: 50rpx;
 }
+.page .content .operation-area .rhythm-box .point-list-box .point-list .level-one {
+  border: 8rpx solid rgba(255, 255, 255, 0.4);
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+.page .content .operation-area .rhythm-box .point-list-box .point-list .level-two {
+  border: 8rpx solid #fff;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+.page .content .operation-area .rhythm-box .point-list-box .point-list .level-three {
+  border: none;
+  background: #fff;
+}
+.page .content .operation-area .rhythm-box .point-list-box .point-list .level-four {
+  border: none;
+  background: #edf940;
+}
+.page .content .handle-box {
+  position: absolute;
+  bottom: 150rpx;
+  z-index: 100;
+  width: 90%;
+  height: 120rpx;
+  -webkit-border-radius: 10rpx;
+          border-radius: 10rpx;
+  margin: 0 5%;
+  background: #131313;
+}
+.page .content .handle-box .handle-btn {
+  width: 50rpx;
+  height: 50rpx;
+  font-size: 80rpx;
+  line-height: 50rpx;
+}
+.page .content .handle-box .beatsNum-box {
+  width: 150rpx;
+  height: 50rpx;
+  font-size: 80rpx;
+  line-height: 50rpx;
+  text-align: center;
+}
+.page .content .handle-box .play-btn {
+  margin-left: 30rpx;
+}
+.page .content .handle-box-acitve {
+  bottom: 450rpx;
+  -webkit-transition-duration: 0.3s;
+          transition-duration: 0.3s;
+}
+.page .content .handle-box-init {
+  bottom: 150rpx;
+  -webkit-transition-duration: 0.3s;
+          transition-duration: 0.3s;
+}
 .page .circle-item-active {
-  -webkit-transition: all 500ms;
-  transition: all 500ms;
-  -webkit-transform: scale(5);
-          transform: scale(5);
+  -webkit-transition: all 20ms;
+  transition: all 20ms;
+  -webkit-transform: scale(1.5);
+          transform: scale(1.5);
 }
 
