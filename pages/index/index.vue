@@ -307,8 +307,11 @@
 					this.beatsNum = this.keyWord
 					this.keyWord = ''
 				}
-			this.stopHandleAudioPlay();
-			this.startHandleAudioPlay()
+				if(!this.isShowPlayBtn){
+					this.stopHandleAudioPlay();
+					this.startHandleAudioPlay()
+				}
+
 				// this.$refs[this.type].close();
 			},
 			// 确定
