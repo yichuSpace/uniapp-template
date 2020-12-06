@@ -44,21 +44,22 @@
 								color: #007AFF;
 								font-size: 50rpx;
 							}
+				
 							.level-one{
-								border: 8rpx solid rgba($color: #fff, $alpha: 0.4);
-								box-sizing: border-box;
+								border: none;
+								background: #edf940;
 							}
 							.level-two{
-								border: 8rpx solid #fff;
-								box-sizing: border-box;
-							}
-							.level-three{
 								border: none;
 								background: #fff;
 							}
+							.level-three{
+								border: 8rpx solid #fff;
+								box-sizing: border-box;
+							}
 							.level-four{
-								border: none;
-								background: #edf940;
+								border: 8rpx solid rgba($color: #fff, $alpha: 0.4);
+								box-sizing: border-box;
 							}
 						}
 					}

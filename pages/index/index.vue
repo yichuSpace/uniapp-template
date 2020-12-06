@@ -1,7 +1,7 @@
 <template>
 	<view class="page">
 		<view class="content">
-			<view class="content-top">fdasfa</view>
+			<!-- <view class="content-top">fdasfa</view> -->
 			<view class="flex align-center justify-center operation-area">
 				<view class="rhythm-box">
 					<view class="rhythm-point flex">
@@ -74,15 +74,18 @@
 			keyboardPackage,
 		},
 
-		created() {
-			let obj = {
-				id: getUuid(),
-				abscissa: 0,
-				ordinate: 0,
-				level: 1
+		onLoad() {
+			this.rhythmPointList[0]=[]
+			for(let i=0;i<4;i++){
+				let obj = {
+					id: getUuid(),
+					abscissa: 0,
+					ordinate: 0,
+					level: 0
+				}
+				this.rhythmPointList[0].push(obj)
 			}
 
-			this.rhythmPointList[0] = [obj]
 			console.log(this.rhythmPointList)
 			audioOne.src = "/static/audio/A1.wav"
 			audioTwo.src = "/static/audio/A2.wav"
@@ -98,25 +101,26 @@
 			audioPlay(key) {
 				return new Promise(resole => {
 					switch (key) {
+
 						case 0:
-							audioOne.stop();
-							resole()
-							break;
-						case 1:
 							audioOne.stop();
 							audioOne.play();
 							resole()
 							break;
-						case 2:
+						case 1:
 							audioTwo.stop();
 							audioTwo.play();
 							resole()
 							break;
-						case 3:
+						case 2:
 							audioThree.stop();
 							audioThree.play();
 							resole()
 							break;
+							case 3:
+								audioOne.stop();
+								resole()
+								break;
 						default:
 							break;
 					}
@@ -199,7 +203,7 @@
 					id: getUuid(),
 					abscissa: this.rhythmPointList.length,
 					ordinate: 0,
-					level: 2
+					level: 1
 				}
 				console.log(obj)
 				if (this.rhythmPointList.length === 8) return
@@ -295,12 +299,14 @@
 				this.$refs[this.type].close();
 			},
 			closePopupBox() {
+				console.log(234535)
 				this.isShowKeyBoard = false
 				if (this.keyWord) {
 					this.beatsNum = this.keyWord
 					this.keyWord = ''
 				}
-
+			this.stopHandleAudioPlay();
+			this.startHandleAudioPlay()
 				// this.$refs[this.type].close();
 			},
 			// 确定
