@@ -184,6 +184,7 @@
 				this.serialNum = null
 				this.serialId = null
 				this.isShowPlayBtn = true
+				this.rhythmIdx = 0
 			},
 			// 暂定
 			pauseHandleAudioPlay(e) {
