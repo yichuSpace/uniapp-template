@@ -219,20 +219,24 @@ var audioFour = uni.createInnerAudioContext({});var _default =
     keyboardPackage: keyboardPackage },
 
 
-  created: function created() {
-    var obj = {
-      id: (0, _index.getUuid)(),
-      abscissa: 0,
-      ordinate: 0,
-      level: 1 };
+  onLoad: function onLoad() {
+    this.rhythmPointList[0] = [];
+    for (var i = 0; i < 4; i++) {
+      var obj = {
+        id: (0, _index.getUuid)(),
+        abscissa: 0,
+        ordinate: 0,
+        level: 0 };
 
+      this.rhythmPointList[0].push(obj);
+    }
 
-    this.rhythmPointList[0] = [obj];
     console.log(this.rhythmPointList);
     audioOne.src = "/static/audio/A1.wav";
     audioTwo.src = "/static/audio/A2.wav";
     audioThree.src = "/static/audio/A3.wav";
     audioFour.src = "/static/audio/A4.wav";
+    this.$forceUpdate();
   },
   onHide: function onHide() {
     console.log('hide');
@@ -243,23 +247,24 @@ var audioFour = uni.createInnerAudioContext({});var _default =
     audioPlay: function audioPlay(key) {
       return new Promise(function (resole) {
         switch (key) {
+
           case 0:
-            audioOne.stop();
-            resole();
-            break;
-          case 1:
             audioOne.stop();
             audioOne.play();
             resole();
             break;
-          case 2:
+          case 1:
             audioTwo.stop();
             audioTwo.play();
             resole();
             break;
-          case 3:
+          case 2:
             audioThree.stop();
             audioThree.play();
+            resole();
+            break;
+          case 3:
+            audioOne.stop();
             resole();
             break;
           default:
@@ -325,6 +330,7 @@ var audioFour = uni.createInnerAudioContext({});var _default =
       this.serialNum = null;
       this.serialId = null;
       this.isShowPlayBtn = true;
+      this.rhythmIdx = 0;
     },
     // 暂定
     pauseHandleAudioPlay: function pauseHandleAudioPlay(e) {
@@ -344,7 +350,7 @@ var audioFour = uni.createInnerAudioContext({});var _default =
         id: (0, _index.getUuid)(),
         abscissa: this.rhythmPointList.length,
         ordinate: 0,
-        level: 2 };
+        level: 1 };
 
       console.log(obj);
       if (this.rhythmPointList.length === 8) return;
@@ -440,12 +446,14 @@ var audioFour = uni.createInnerAudioContext({});var _default =
       this.$refs[this.type].close();
     },
     closePopupBox: function closePopupBox() {
+      console.log(234535);
       this.isShowKeyBoard = false;
       if (this.keyWord) {
         this.beatsNum = this.keyWord;
         this.keyWord = '';
       }
-
+      this.stopHandleAudioPlay();
+      this.startHandleAudioPlay();
       // this.$refs[this.type].close();
     },
     // 确定

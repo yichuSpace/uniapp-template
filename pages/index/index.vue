@@ -91,6 +91,7 @@
 			audioTwo.src = "/static/audio/A2.wav"
 			audioThree.src = "/static/audio/A3.wav"
 			audioFour.src = "/static/audio/A4.wav"
+			this.$forceUpdate()
 		},
 		onHide: function() {
 			console.log('hide')
