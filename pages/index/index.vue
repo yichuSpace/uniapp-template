@@ -5,20 +5,21 @@
 			<view class="flex align-center justify-center operation-area">
 				<view class="rhythm-box">
 					<view class="rhythm-point flex">
-						<view class="animated bounceIn fast handle-icon delete-icon mt-5" @click="deletePointListData">-</view>
+						<view class="handle-icon delete-icon mt-5" @click="deletePointListData">-</view>
 						<view class="flex justify-between flex-column align-center point-list-box" v-for="(list,index) in rhythmPointList"
 						 :key="index">
-							<view class="animated bounceIn fast handle-icon point-delete-icon " @click="deletePointData(index)">-</view>
+							<view class="handle-icon point-delete-icon " @click="deletePointData(index)">-</view>
 							<view class="flex-1 point-list">
-								<view class="point-item circle-item-strong " :class="[item.id ===serialId?'circle-item-active':'',item.level===0?'level-one':item.level===1?'level-two':item.level===2?'level-three':'level-four']"
-								 v-for="(item,idx) in list" :key="idx" @click="handlePointLevel(index,idx)">
-									<!-- {{item.level}} -->
+								<view class=" point-icon" v-for="(item,idx) in list" :key="idx" @click="handlePointLevel(index,idx)">
+									<view class="point-item circle-item-strong " :class="[item.id ===serialId?'circle-item-active':'',item.level===0?'level-one':item.level===1?'level-two':item.level===2?'level-three':'level-four']">
+									</view>
 								</view>
 							</view>
-							<view class="animated bounceIn fast handle-icon point-add-icon " @click="addPointData(index)">+</view>
+							<view class="handle-icon point-add-icon " @click="addPointData(index)">+</view>
 						</view>
-						<view class="animated bounceIn fast handle-icon add-icon mt-5" @click="addPointListData">+</view>
+						<view class="handle-icon add-icon mt-5" @click="addPointListData">+</view>
 					</view>
+					<view class="handle-icon add-icon mt-5" @click="addPointListData">+</view>
 				</view>
 			</view>
 			<view class="flex align-center handle-box justify-center" :class="isShowKeyBoard?'handle-box-acitve':'handle-box-init'">
@@ -51,7 +52,7 @@
 				keyWord: '',
 				isShowPlayBtn: true, //是否显示播放按钮
 				isShowKeyBoard: false, //是否显示键盘
-				tapTimeData:'',//点击tap时间
+				tapTimeData: '', //点击tap时间
 				numberList: [],
 				idCardList: [],
 				plateNumberList: [],
@@ -75,17 +76,21 @@
 		},
 
 		onLoad() {
-			this.rhythmPointList[0]=[]
-			for(let i=0;i<4;i++){
-				let obj = {
-					id: getUuid(),
-					abscissa: 0,
-					ordinate: 0,
-					level: 0
+			let rhythmPointList = []
+			for (let i = 0; i < 3; i++) {
+				let list = []
+				for (let j = 0; j < 4; j++) {
+					let obj = {
+						id: getUuid(),
+						abscissa: 0,
+						ordinate: 0,
+						level: 0
+					}
+					list.push(obj)
 				}
-				this.rhythmPointList[0].push(obj)
+				rhythmPointList.push(list)
 			}
-
+			this.rhythmPointList = rhythmPointList
 			console.log(this.rhythmPointList)
 			audioOne.src = "/static/audio/A1.wav"
 			audioTwo.src = "/static/audio/A2.wav"
@@ -118,10 +123,10 @@
 							audioThree.play();
 							resole()
 							break;
-							case 3:
-								audioOne.stop();
-								resole()
-								break;
+						case 3:
+							audioOne.stop();
+							resole()
+							break;
 						default:
 							break;
 					}
@@ -214,7 +219,7 @@
 			// 删除列表数据
 			deletePointListData() {
 				if (this.rhythmPointList.length === 1) return
-				this.rhythmPointList.shift()
+				this.rhythmPointList.pop()
 			},
 			// 添加点数
 			addPointData(idx) {
@@ -240,7 +245,7 @@
 			deletePointData(idx) {
 				console.log(this.rhythmPointList[idx].length)
 				if (this.rhythmPointList[idx].length === 1) return
-				this.rhythmPointList[idx].shift()
+				this.rhythmPointList[idx].pop()
 				this.$forceUpdate()
 			},
 			// 增加级别
@@ -271,17 +276,17 @@
 			// 获取输入值
 			onInputValue(val) {
 				console.log(val)
-				if(val === 'TAP'){
+				if (val === 'TAP') {
 					const time = new Date().getTime()
-					if(this.tapTimeData && time - this.tapTimeData <1000){
-						const keyWord =Math.ceil(Math.random()*100)+this.keyWord
-						if(keyWord>=1000){
-							this.keyWord =Math.ceil(Math.random()*100)
-						}else{
-							this.keyWord =keyWord
+					if (this.tapTimeData && time - this.tapTimeData < 1000) {
+						const keyWord = Math.ceil(Math.random() * 100) + this.keyWord
+						if (keyWord >= 1000) {
+							this.keyWord = Math.ceil(Math.random() * 100)
+						} else {
+							this.keyWord = keyWord
 						}
-					}else{
-						this.keyWord =Math.ceil(Math.random()*100)
+					} else {
+						this.keyWord = Math.ceil(Math.random() * 100)
 					}
 					this.tapTimeData = time
 					return
@@ -307,8 +312,8 @@
 					this.beatsNum = this.keyWord
 					this.keyWord = ''
 				}
-				if(!this.isShowPlayBtn){
-					this.stopHandleAudioPlay();
+				if (!this.isShowPlayBtn) {
+					this.pauseHandleAudioPlay()
 					this.startHandleAudioPlay()
 				}
 
