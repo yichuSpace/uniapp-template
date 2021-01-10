@@ -8,11 +8,13 @@
 			.operation-area{
 				padding-top: 150rpx;
 				.rhythm-box{
-					// width: 100%;
 					padding: 30rpx;
 					box-sizing: border-box;
 					overflow: hidden;
 					overflow-x: auto;
+					&-icon{
+						text-align: center;
+					}
 					.handle-icon{
 						width: 50rpx;
 						height: 50rpx;
@@ -31,8 +33,11 @@
 					.point-list-box{
 						.point-list{
 							margin-top: 0rpx;
+							&-item{
+								// height: 70%;
+							}
 							.point-icon{
-								padding: 10px;
+								padding: 40rpx;
 							}
 							.point-item{
 								width: 30rpx;
@@ -102,7 +107,15 @@
 			}
 		}	
 		.circle-item-active {
-			transition: all 20ms;
 			transform: scale(1.5);
+			animation: dongHua 500ms 1 ease-in-out;
 		}
 	}
+@keyframes dongHua {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}

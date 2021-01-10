@@ -4,22 +4,34 @@
 			<!-- <view class="content-top">fdasfa</view> -->
 			<view class="flex align-center justify-center operation-area">
 				<view class="rhythm-box">
+					<view class="flex justify-center">
+						<view class="handle-icon rhythm-box-icon " @click="deletePointItemLastOneList">-</view>
+					</view>
 					<view class="rhythm-point flex">
 						<view class="handle-icon delete-icon mt-5" @click="deletePointListData">-</view>
 						<view class="flex justify-between flex-column align-center point-list-box" v-for="(list,index) in rhythmPointList"
 						 :key="index">
 							<view class="handle-icon point-delete-icon " @click="deletePointData(index)">-</view>
 							<view class="flex-1 point-list">
-								<view class=" point-icon" v-for="(item,idx) in list" :key="idx" @click="handlePointLevel(index,idx)">
+								<view class="point-icon" v-if="idx === 0" v-for="(item,idx) in list" :key="idx" @touchend="handlePointLevel(index,idx)">
 									<view class="point-item circle-item-strong " :class="[item.id ===serialId?'circle-item-active':'',item.level===0?'level-one':item.level===1?'level-two':item.level===2?'level-three':'level-four']">
 									</view>
 								</view>
+								<view class="flex justify-between flex-column">
+									<view class="point-icon" v-if="idx !== 0" v-for="(item,idx) in list" :key="idx" @touchend="handlePointLevel(index,idx)">
+											<view class="point-item circle-item-strong " :class="[item.id ===serialId?'circle-item-active':'',item.level===0?'level-one':item.level===1?'level-two':item.level===2?'level-three':'level-four']">
+											</view>
+									</view>
+								</view>
 							</view>
+
 							<view class="handle-icon point-add-icon " @click="addPointData(index)">+</view>
 						</view>
 						<view class="handle-icon add-icon mt-5" @click="addPointListData">+</view>
 					</view>
-					<view class="handle-icon add-icon mt-5" @click="addPointListData">+</view>
+					<view class="flex justify-center">
+						<view class="handle-icon add-icon mt-5" @click="addPointItemLastOneList">+</view>
+					</view>
 				</view>
 			</view>
 			<view class="flex align-center handle-box justify-center" :class="isShowKeyBoard?'handle-box-acitve':'handle-box-init'">
@@ -41,11 +53,10 @@
 		getUuid
 	} from '@/utils/index.js'
 	import keyboardPackage from "@/components/keyboard-package/keyboard-package.vue"
-	const audioOne = uni.createInnerAudioContext({});
-	const audioTwo = uni.createInnerAudioContext({});
-	const audioThree = uni.createInnerAudioContext({});
-	const audioFour = uni.createInnerAudioContext({});
-
+	const audioOne = uni.createInnerAudioContext();
+	const audioTwo = uni.createInnerAudioContext();
+	const audioThree = uni.createInnerAudioContext();
+	const audioFour = uni.createInnerAudioContext();
 	export default {
 		data() {
 			return {
@@ -95,36 +106,48 @@
 			audioOne.src = "/static/audio/A1.wav"
 			audioTwo.src = "/static/audio/A2.wav"
 			audioThree.src = "/static/audio/A3.wav"
-			audioFour.src = "/static/audio/A4.wav"
+			audioFour.src = "/static/audio/B1.wav"
+			audioOne.title = '致爱丽丝';
+			audioOne.singer = '暂无';
+			audioOne.coverImgUrl =
+				'https://vkceyugu.cdn.bspapp.com/VKCEYUGU-uni-app-doc/7fbf26a0-4f4a-11eb-b680-7980c8a877b8.png';
+			// audioOne.play();
+			// audioOne.onError(err=>{
+			// 	console.log(err)
+			// })
 			this.$forceUpdate()
 		},
 		onHide: function() {
 			console.log('hide')
-			this.stopHandleAudioPlay();
+			// this.stopHandleAudioPlay();
 		},
 		methods: {
 			// 播放音频
 			audioPlay(key) {
 				return new Promise(resole => {
-					switch (key) {
 
+					switch (key) {
 						case 0:
+							// bgAudioMannager.src = 'https://vkceyugu.cdn.bspapp.com/VKCEYUGU-uni-app-doc/7fbf26a0-4f4a-11eb-b680-7980c8a877b8.png';
 							audioOne.stop();
 							audioOne.play();
 							resole()
 							break;
 						case 1:
+							// bgAudioMannager.src = 'https://vkceyugu.cdn.bspapp.com/VKCEYUGU-hello-uniapp/2cc220e0-c27a-11ea-9dfb-6da8e309e0d8.mp3';
 							audioTwo.stop();
 							audioTwo.play();
 							resole()
 							break;
 						case 2:
+							// bgAudioMannager.src = 'https://vkceyugu.cdn.bspapp.com/VKCEYUGU-hello-uniapp/2cc220e0-c27a-11ea-9dfb-6da8e309e0d8.mp3';
 							audioThree.stop();
 							audioThree.play();
 							resole()
 							break;
 						case 3:
-							audioOne.stop();
+							// audioFour.src= "/static/audio/A4.wav"
+							audioFour.stop();
 							resole()
 							break;
 						default:
@@ -135,6 +158,14 @@
 
 			// 开始
 			startHandleAudioPlay() {
+				if (this.isShowKeyBoard) {
+					if (this.keyWord) {
+						this.beatsNum = this.keyWord
+					}
+					if (!this.isShowPlayBtn) {
+						this.pauseHandleAudioPlay()
+					}
+				}
 				let playPointList = []
 				this.rhythmPointList.forEach(item => {
 					playPointList = [...playPointList, ...item]
@@ -221,6 +252,25 @@
 				if (this.rhythmPointList.length === 1) return
 				this.rhythmPointList.pop()
 			},
+			// 删除最后一个数据
+			deletePointItemLastOneList() {
+				this.rhythmPointList.forEach(item => {
+					if (item.length !== 1) {
+						item.pop()
+					}
+				})
+			},
+			addPointItemLastOneList() {
+				this.rhythmPointList.forEach((item, idx) => {
+					const obj = {
+						id: getUuid(),
+						abscissa: idx,
+						ordinate: item.length,
+						level: 1
+					}
+					item.push(obj)
+				})
+			},
 			// 添加点数
 			addPointData(idx) {
 				let serialNum = 0
@@ -243,7 +293,6 @@
 			},
 			// 删除点数
 			deletePointData(idx) {
-				console.log(this.rhythmPointList[idx].length)
 				if (this.rhythmPointList[idx].length === 1) return
 				this.rhythmPointList[idx].pop()
 				this.$forceUpdate()
@@ -305,8 +354,8 @@
 			close() {
 				this.$refs[this.type].close();
 			},
+			// 关闭弹框
 			closePopupBox() {
-				console.log(234535)
 				this.isShowKeyBoard = false
 				if (this.keyWord) {
 					this.beatsNum = this.keyWord
@@ -316,7 +365,6 @@
 					this.pauseHandleAudioPlay()
 					this.startHandleAudioPlay()
 				}
-
 				// this.$refs[this.type].close();
 			},
 			// 确定
@@ -327,6 +375,9 @@
 					icon: 'none'
 				})
 			},
+			touchmove() {
+				console.log('234234234')
+			}
 		},
 		computed: {
 
