@@ -1,7 +1,7 @@
 <template>
 	<view class="page">
 		<view class="content">
-			<!-- <view class="content-top">fdasfa</view> -->
+			<view class="content-top">{{beatNumTitle}}</view>
 			<view class="flex align-center justify-center operation-area">
 				<view class="rhythm-box">
 					<view class="flex justify-center">
@@ -17,10 +17,10 @@
 									<view class="point-item circle-item-strong " :class="[item.id ===serialId?'circle-item-active':'',item.level===0?'level-one':item.level===1?'level-two':item.level===2?'level-three':'level-four']">
 									</view>
 								</view>
-								<view class="flex justify-between flex-column">
+								<view class="point-list-item flex justify-between flex-column">
 									<view class="point-icon" v-if="idx !== 0" v-for="(item,idx) in list" :key="idx" @touchend="handlePointLevel(index,idx)">
-											<view class="point-item circle-item-strong " :class="[item.id ===serialId?'circle-item-active':'',item.level===0?'level-one':item.level===1?'level-two':item.level===2?'level-three':'level-four']">
-											</view>
+										<view class="point-item circle-item-strong " :class="[item.id ===serialId?'circle-item-active':'',item.level===0?'level-one':item.level===1?'level-two':item.level===2?'level-three':'level-four']">
+										</view>
 									</view>
 								</view>
 							</view>
@@ -60,6 +60,7 @@
 	export default {
 		data() {
 			return {
+				beatNumTitle: '',
 				keyWord: '',
 				isShowPlayBtn: true, //是否显示播放按钮
 				isShowKeyBoard: false, //是否显示键盘
@@ -102,51 +103,43 @@
 				rhythmPointList.push(list)
 			}
 			this.rhythmPointList = rhythmPointList
-			console.log(this.rhythmPointList)
 			audioOne.src = "/static/audio/A1.wav"
 			audioTwo.src = "/static/audio/A2.wav"
 			audioThree.src = "/static/audio/A3.wav"
 			audioFour.src = "/static/audio/B1.wav"
-			audioOne.title = '致爱丽丝';
-			audioOne.singer = '暂无';
-			audioOne.coverImgUrl =
-				'https://vkceyugu.cdn.bspapp.com/VKCEYUGU-uni-app-doc/7fbf26a0-4f4a-11eb-b680-7980c8a877b8.png';
-			// audioOne.play();
-			// audioOne.onError(err=>{
-			// 	console.log(err)
-			// })
 			this.$forceUpdate()
 		},
-		onHide: function() {
-			console.log('hide')
-			// this.stopHandleAudioPlay();
+		watch: {
+			"rhythmPointList": {
+				handler: function(val) {
+					const arr = val.map(item => item.length)
+					const beatNum = Math.max(...arr)
+					this.beatNumTitle = `${val.length}/${beatNum}`
+				},
+				deep: true
+			}
 		},
 		methods: {
 			// 播放音频
 			audioPlay(key) {
 				return new Promise(resole => {
-
 					switch (key) {
 						case 0:
-							// bgAudioMannager.src = 'https://vkceyugu.cdn.bspapp.com/VKCEYUGU-uni-app-doc/7fbf26a0-4f4a-11eb-b680-7980c8a877b8.png';
 							audioOne.stop();
 							audioOne.play();
 							resole()
 							break;
 						case 1:
-							// bgAudioMannager.src = 'https://vkceyugu.cdn.bspapp.com/VKCEYUGU-hello-uniapp/2cc220e0-c27a-11ea-9dfb-6da8e309e0d8.mp3';
 							audioTwo.stop();
 							audioTwo.play();
 							resole()
 							break;
 						case 2:
-							// bgAudioMannager.src = 'https://vkceyugu.cdn.bspapp.com/VKCEYUGU-hello-uniapp/2cc220e0-c27a-11ea-9dfb-6da8e309e0d8.mp3';
 							audioThree.stop();
 							audioThree.play();
 							resole()
 							break;
 						case 3:
-							// audioFour.src= "/static/audio/A4.wav"
 							audioFour.stop();
 							resole()
 							break;
@@ -211,7 +204,6 @@
 				}
 				this.$set(this, 'serialNum', serialNum)
 				this.$set(this, 'serialId', this.playPointList[serialNum].id)
-				// this.audioPlay(this.playPointList[serialNum].level)
 			},
 			// 停止
 			stopHandleAudioPlay(e) {
@@ -324,7 +316,6 @@
 			},
 			// 获取输入值
 			onInputValue(val) {
-				console.log(val)
 				if (val === 'TAP') {
 					const time = new Date().getTime()
 					if (this.tapTimeData && time - this.tapTimeData < 1000) {
@@ -348,7 +339,6 @@
 			// 删除
 			onDelete() {
 				this.keyWord = this.keyWord.substring(0, this.keyWord.length - 1)
-				console.log(this.keyWord)
 			},
 			// 关闭键盘
 			close() {
@@ -365,7 +355,6 @@
 					this.pauseHandleAudioPlay()
 					this.startHandleAudioPlay()
 				}
-				// this.$refs[this.type].close();
 			},
 			// 确定
 			onConfirm() {
@@ -375,12 +364,6 @@
 					icon: 'none'
 				})
 			},
-			touchmove() {
-				console.log('234234234')
-			}
-		},
-		computed: {
-
 		}
 	};
 </script>
